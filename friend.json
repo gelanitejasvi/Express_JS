@@ -1,0 +1,30 @@
+[
+   {
+       "id" : 1,
+       "Name":"Tom",
+       "Age":"19",
+       "occupation":"Pharmacist"
+   },
+
+    {
+        "id" : 2,
+        "Name":"Jerry",
+        "Age":"19",
+        "occupation":"CEO"
+    },
+
+    {
+        "id" : 3,
+        "Name":"Jemis",
+        "Age":"17",
+        "occupation":"Businessman"
+    },
+
+    {
+        "id" : 4,
+        "Name":"yug",
+        "Age":"15",
+        "occupation":"student"
+    }
+
+]
