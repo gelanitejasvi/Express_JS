@@ -3,9 +3,11 @@ const app = express();
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 
+// const uri = process.env.Mongo_URI
+require("dotenv").config();
 // Database connection
 mongoose
-    .connect("mongodb://127.0.0.1:27017/userdatabase")
+    .connect(process.env.MONGO_URI)
     .then(() => console.log(`Database connection established successfully.....`))
     .catch(err => console.log(err));
 
