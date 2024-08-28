@@ -1,4 +1,4 @@
-const Product = require();
+const Product = require('../model/product.model');
 
 exports.addNewProduct = (req,res) => {
     console.log(req.body);

@@ -97,13 +97,18 @@ const jwt = require('jsonwebtoken');
 
 exports.registerUser = async (req,res) =>{
     try {
+       let imagePath="";
        let user = await User.findOne({email:req.body.email, isDelete:false});
        if(user){
         return res.status(400).json({message:"User already exist...."});
        } 
+       if(req.file){
+        // console.log(req.file.path);
+        imagePath = req.file.path.replace(/\\/g,"/");
+       }
        let hashPassword = await bcrypt.hash(req.body.password,10);
     //    console.log(hashPassword);
-       user = await User.create({...req.body , password:hashPassword});
+       user = await User.create({...req.body , password:hashPassword , profileImage:imagePath});
        user.save();
        res.status(201).json({user,message:'User Registration Successfully....'});
        
@@ -139,6 +144,21 @@ exports.loginUser = async(req,res) => {
 exports.userProfile = async(req,res) => {
     try {
         res.status(200).json(req.user);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:"Internal Server Error"});
+    }
+}
+
+exports.updateUSer = async (req,res) => {
+    try {
+        let user = req.user;
+        user = await User.findByIdAndUpdate(
+            user._id,
+            { $set : req.body},
+            { new : true}
+        );
+        res.status(202).json({ user, message:"User Update Success"});
     } catch (error) {
         console.log(error);
         res.status(500).json({message:"Internal Server Error"});
