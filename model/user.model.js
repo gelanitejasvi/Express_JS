@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
         unique : true
     },
     password : {
-        type : String
+        type : String,
+        required : true
     },
     mobileNo : {
         type : String
@@ -18,9 +19,7 @@ const userSchema = mongoose.Schema({
     age: {
         type : Number
     },
-    profileImage:{
-        type : String
-    },
+   
     address : {
         line1 : String,
         line2 : String,

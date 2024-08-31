@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../model/user.model');
 
-exports.varifyToken = async(req,res,next) => {
+exports.verifyToken = async(req,res,next) => {
     try {
         let authorization = req.headers['authorization'];
         if(!authorization){
@@ -25,3 +25,4 @@ exports.varifyToken = async(req,res,next) => {
         res.status(500).json({message:"Internal Server Error"});
     }
 };
+

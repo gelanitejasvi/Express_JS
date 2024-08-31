@@ -95,21 +95,21 @@ const jwt = require('jsonwebtoken');
 
 // Registration
 
-exports.registerUser = async (req,res) =>{
+const registerUser = async (req,res) =>{
     try {
-       let imagePath="";
+    //    let imagePath="";
        let user = await User.findOne({email:req.body.email, isDelete:false});
        if(user){
         return res.status(400).json({message:"User already exist...."});
        } 
-       if(req.file){
-        // console.log(req.file.path);
-        imagePath = req.file.path.replace(/\\/g,"/");
-       }
+    //    if(req.file){
+    //     // console.log(req.file.path);
+    //     imagePath = req.file.path.replace(/\\/g,"/");
+    //    }
        let hashPassword = await bcrypt.hash(req.body.password,10);
     //    console.log(hashPassword);
-       user = await User.create({...req.body , password:hashPassword , profileImage:imagePath});
-       user.save();
+       user = await User.create({...req.body , password:hashPassword });
+    //    user.save();
        res.status(201).json({user,message:'User Registration Successfully....'});
        
     } catch (error) {
@@ -120,19 +120,19 @@ exports.registerUser = async (req,res) =>{
 
 
 // Login
-exports.loginUser = async(req,res) => {
+const loginUser = async(req,res) => {
     try {
         let user = await User.findOne({email:req.body.email,isDelete:false});
         if(!user){
             return res.status(404).json({message:"User Not Found"});
         }
-        let matchPassword = await bcrypt.compare(req.body.password,user.password)
+        let matchPassword = await bcrypt.compare(req.body.password,user.password);
         // console.log(matchPassword);
         if(!matchPassword){
             return res.status(400).json({message:'Email or Password not matched.....'});
         }
         let token = await jwt.sign({ userId:user._id },process.env.JWT_SECRET);
-        res.status(200).json({message:'Login Success',token})
+        res.status(200).json({message:'Login Success',token});
         
     } catch (error) {
         console.log(error);
@@ -141,7 +141,7 @@ exports.loginUser = async(req,res) => {
     }
 }
 
-exports.userProfile = async(req,res) => {
+const userProfile = async(req,res) => {
     try {
         res.status(200).json(req.user);
     } catch (error) {
@@ -150,17 +150,23 @@ exports.userProfile = async(req,res) => {
     }
 }
 
-exports.updateUSer = async (req,res) => {
-    try {
-        let user = req.user;
-        user = await User.findByIdAndUpdate(
-            user._id,
-            { $set : req.body},
-            { new : true}
-        );
-        res.status(202).json({ user, message:"User Update Success"});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({message:"Internal Server Error"});
-    }
-}
+// exports.updateUser = async (req,res) => {
+//     try {
+//         let user = req.user;
+//         user = await User.findByIdAndUpdate(
+//             user._id,
+//             { $set : req.body},
+//             { new : true}
+//         );
+//         res.status(202).json({ user, message:"User Update Success"});
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json({message:"Internal Server Error"});
+//     }
+// }
+
+module.exports = {
+                    registerUser,
+                    loginUser,
+                    userProfile
+                }
