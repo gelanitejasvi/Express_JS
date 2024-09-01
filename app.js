@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
@@ -10,7 +11,6 @@ const { addtoCart} = require("./controller/cart.controller");
 const cartRoutes = require('./routes/cart.routes');
 
 // const uri = process.env.Mongo_URI
-require("dotenv").config();
 // Database connection
 mongoose
     .connect(process.env.MONGO_URI)
