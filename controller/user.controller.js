@@ -139,15 +139,15 @@ const jwt = require('jsonwebtoken');
 
 const registerUser = async (req,res) =>{
     try {
-    //    let imagePath="";
+       let imagePath="";
        let user = await User.findOne({email:req.body.email, isDelete:false});
        if(user){
         return res.status(400).json({message:"User already exist...."});
        } 
-    //    if(req.file){
-    //     // console.log(req.file.path);
-    //     imagePath = req.file.path.replace(/\\/g,"/");
-    //    }
+       if(req.file){
+        // console.log(req.file.path);
+        imagePath = req.file.path.replace(/\\/g,"/");
+       }
        let hashPassword = await bcrypt.hash(req.body.password,10);
     //    console.log(hashPassword);
        user = await User.create({...req.body , password:hashPassword });
