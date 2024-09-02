@@ -1,10 +1,12 @@
-const Product = require('../model/product.model');
+const Product = require('../model/product.model');  // if services is use where model is not required
+const ProductServices = require('../services/product.sevice');
+const ProductServices = new ProductServices()
 
-exports.addNewProduct = (req,res) => {
-    console.log(req.body);
-    products.push(req.body);
-    res.json({product:req.body , message:"Product Added Success"});
-};
+// exports.addNewProduct = (req,res) => {
+//     console.log(req.body);
+//     products.push(req.body);
+//     res.json({product:req.body , message:"Product Added Success"});
+// };
 
 exports.getAllProducts = (req,res) =>{
     res.json(products);
@@ -50,16 +52,12 @@ exports.deleteProduct = (req,res) =>{
 
 exports.addNewProduct = async (req,res) => {
     try{
-        console.log(req.body);
-        const{ productName , price , productCompany , validity } = req.body;
-        let product = await Product.findOne({productName:productName,isDelete:false});
+        let product = await ProductServices.getProduct({ title:req.body.title , isDelete:false});
         if(product)
             return res.status(400).json({message:"Product Already Exist...."});
-        product = await Product.create({
-            productName , price , productCompany , validity
-        });
+        product = await ProductServices.addNewProduct({...req.body});
 
-        product.save();
+        // product.save();
         res.status(201).json({product , message:"Product Added"});    
     }catch (error){
         console.log(error);
@@ -124,6 +122,9 @@ exports.deleteProduct = async(req,res) =>{
         res.status(500).json({message:"Internal Server Error"});
     }
 };
+
+
+
 
 
 
